@@ -13,7 +13,9 @@ import Handy from "./defucilis_thehandy.js";
 const extensionName = "st-extension-example";
 const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
 const extensionSettings = extension_settings[extensionName];
-const defaultSettings = {};
+const defaultSettings = {
+	handy_key: ""
+};
 
 
 const stroke = /stroke\((\d+)\)/;
