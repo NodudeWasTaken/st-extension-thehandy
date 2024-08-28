@@ -23,6 +23,8 @@ const handy = new Handy.default();
 
 
 eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
+// For debug
+eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
 
 function handleIncomingMessage(dataId) {
 	const msg = chat[dataId].mes
@@ -88,14 +90,14 @@ async function onButtonClick() {
 		setStatusColor(false)
 
 		toastr.info(
-			`Handy Status`,
-			"Connected!"
+			`Connected!`,
+			"Handy Status"
 		);
 	} catch (e) {
 		setStatusColor(true)
 		toastr.info(
-			`Handy Status`,
-			`Not connected error: ${e}!`
+			`Not connected error: ${e}!`,
+			`Handy Status`
 		);
 	}
 }
