@@ -26,18 +26,21 @@ eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
 // For debug
 eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
 
-function handleIncomingMessage(dataId) {
+async function handleIncomingMessage(dataId) {
 	const msg = chat[dataId].mes
     console.log("extension msg: ", msg)
 	const mstroke = msg.match(stroke)
 	if (mstroke) {
-		console.log("stroke: ", mstroke)
-		//await handy.setHampVelocity(50);
+		const regulated = Math.max(Math.min(mstroke[1],100),0)
+		console.log("stroke: ", mstroke, regulated)
+		await handy.setHampVelocity(regulated);
 	}
 	const mslide = msg.match(slide)
 	if (mslide) {
-		console.log("slide: ", mslide)
-		//await handy.setSlideSettings(0,30)
+		const minregulated = Math.max(Math.min(mstroke[1],100),0)
+		const maxregulated = Math.max(Math.min(mstroke[2],100),0)
+		console.log("slide: ", mslide, minregulated, maxregulated)
+		await handy.setSlideSettings(minregulated,maxregulated)
 	}
 }
 
