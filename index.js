@@ -63,7 +63,7 @@ async function handleIncomingMessage(dataId) {
 		debounce(async () => {
 			console.log("handy stop")
 			await handy.setHampStop()
-		}, extension_settings[extensionName].handy_maxrun);
+		}, Number(extension_settings[extensionName].handy_maxrun));
 	}
 }
 
