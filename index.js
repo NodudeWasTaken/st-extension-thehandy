@@ -37,31 +37,38 @@ const debounce = (callback, wait) => {
 }
 
 async function handleIncomingMessage(dataId) {
-	const msg = chat[dataId].mes
-    // console.log("extension msg: ", msg)
-	const mstroke = msg.match(stroke)
-	const mslide = msg.match(slide)
+	try {
+		const msg = chat[dataId].mes
+		// console.log("extension msg: ", msg)
+		const mstroke = msg.match(stroke)
+		const mslide = msg.match(slide)
 
-	if (mstroke) {
-		const regulated = Math.max(Math.min(mstroke[1],100),0)
-		console.log("stroke: ", mstroke, regulated)
-		await handy.setHampVelocity(regulated);
-	}
-	if (mslide) {
-		const minregulated = Math.max(Math.min(mslide[1],100),0)
-		const maxregulated = Math.max(Math.min(mslide[2],100),0)
-		console.log("slide: ", mslide, minregulated, maxregulated)
-		await handy.setSlideSettings(minregulated,maxregulated)
-	}
+		if (mstroke) {
+			const regulated = Math.max(Math.min(mstroke[1],100),0)
+			console.log("stroke: ", mstroke, regulated)
+			await handy.setHampVelocity(regulated);
+		}
+		if (mslide) {
+			const minregulated = Math.max(Math.min(mslide[1],100),0)
+			const maxregulated = Math.max(Math.min(mslide[2],100),0)
+			console.log("slide: ", mslide, minregulated, maxregulated)
+			await handy.setSlideSettings(minregulated,maxregulated)
+		}
 
-	if (mstroke || mslide) {
-		await handy.setHampStart();
-		const delay = Number(extension_settings[extensionName].handy_maxrun)
-		console.log("handy delay", delay)
-		debounce(async () => {
-			console.log("handy stop")
-			await handy.setHampStop()
-		}, delay);
+		if (mstroke || mslide) {
+			await handy.setHampStart();
+			const delay = Number(extension_settings[extensionName].handy_maxrun)
+			console.log("handy delay", delay)
+			debounce(async () => {
+				console.log("handy stop")
+				await handy.setHampStop()
+			}, delay);
+		}
+	} catch (e) {
+		toastr.info(
+			`handleIncomingMessage error: ${e}!`,
+			`Handy Script`
+		);
 	}
 }
 
