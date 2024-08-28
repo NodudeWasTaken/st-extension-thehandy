@@ -33,9 +33,7 @@ const debounce = (callback, wait) => {
 	let timeoutId = null;
 	
 	clearTimeout(timeoutId);
-	timeoutId = setTimeout(() => {
-		callback();
-	}, wait);
+	timeoutId = setTimeout(callback, wait);
 }
 
 async function handleIncomingMessage(dataId) {
