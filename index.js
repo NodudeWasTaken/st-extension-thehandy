@@ -45,18 +45,20 @@ async function handleIncomingMessage(dataId) {
 	const msg = chat[dataId].mes
     console.log("extension msg: ", msg)
 	const mstroke = msg.match(stroke)
+	const mslide = msg.match(slide)
+
 	if (mstroke) {
 		const regulated = Math.max(Math.min(mstroke[1],100),0)
 		console.log("stroke: ", mstroke, regulated)
 		await handy.setHampVelocity(regulated);
 	}
-	const mslide = msg.match(slide)
 	if (mslide) {
-		const minregulated = Math.max(Math.min(mstroke[1],100),0)
-		const maxregulated = Math.max(Math.min(mstroke[2],100),0)
+		const minregulated = Math.max(Math.min(mslide[1],100),0)
+		const maxregulated = Math.max(Math.min(mslide[2],100),0)
 		console.log("slide: ", mslide, minregulated, maxregulated)
 		await handy.setSlideSettings(minregulated,maxregulated)
 	}
+	
 	if (mstroke || mslide) {
 		await handy.setHampStart();
 		debounce(async () => handy.setHampStop(), extension_settings[extensionName].handy_maxrun);
