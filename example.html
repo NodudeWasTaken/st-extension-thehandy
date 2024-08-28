@@ -1,22 +1,37 @@
 <!-- You might want to add additional HTML elements to ST. 
     It's good practice to separate it out from your code -->
-<div class="example-extension-settings">
+<div class="handy-extension-settings">
     <div class="inline-drawer">
         <div class="inline-drawer-toggle inline-drawer-header">
-            <b>Extension Example</b>
+            <b>TheHandy Extension</b>
             <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
         </div>
         <div class="inline-drawer-content">
-            <div class="example-extension_block flex-container">
-                <input id="my_button" class="menu_button" type="submit" value="Example Button" />
+            <div class="init-extension_block flex-container">
+                <input id="my_button" class="menu_button" type="submit" value="Init Button" />
             </div>
+			<span class="dot dot-red"></span>
 
-            <div class="example-extension_block flex-container">
-                <input id="example_setting" type="checkbox" />
-                <label for="example_setting">This is an example</label>
+            <div class="handykey-extension_block flex-container">
+                <input id="handykey_setting" type="text" />
+                <label for="handykey_setting">Handy Key</label>
             </div>
 
             <hr class="sysHR" />
         </div>
     </div>
 </div>
+<style>
+.dot {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+} 
+.dot-red {
+	background-color: #ff0000;
+}
+.dot-green {
+	background-color: #00ff00;
+}
+</style>

@@ -7,6 +7,8 @@ import { extension_settings, getContext, loadExtensionSettings } from "../../../
 //You'll likely need to import some other functions from the main script
 import { saveSettingsDebounced, eventSource, event_types, chat } from "../../../../script.js";
 
+import { Handy } from "defucilis_thehandy";
+
 // Keep track of where your extension is located, name should match repo name
 const extensionName = "st-extension-example";
 const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
@@ -14,10 +16,17 @@ const extensionSettings = extension_settings[extensionName];
 const defaultSettings = {};
 
 
+const stroke = /stroke\((\d+)\)/;
+const slide = /slide\((\d+),(\d+)\)/;
+
+
+const handy = new Handy();
+
+
 eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
 
 function handleIncomingMessage(dataId) {
-    console.log("extension msg: ", chat[dataId])
+    console.log("extension msg: ", chat[dataId].mes)
 }
 
 // Loads the extension settings if they exist, otherwise initializes them to the defaults.
@@ -28,14 +37,16 @@ async function loadSettings() {
     Object.assign(extension_settings[extensionName], defaultSettings);
   }
 
+  handy.connectionKey = extension_settings[extensionName].handy_key;
+
   // Updating settings in the UI
-  $("#example_setting").prop("checked", extension_settings[extensionName].example_setting).trigger("input");
+  $("#handykey_setting").prop("value", extension_settings[extensionName].handy_key).trigger("input");
 }
 
 // This function is called when the extension settings are changed in the UI
 function onExampleInput(event) {
-  const value = Boolean($(event.target).prop("checked"));
-  extension_settings[extensionName].example_setting = value;
+  const value = Boolean($(event.target).prop("value"));
+  extension_settings[extensionName].handy_key = value;
   saveSettingsDebounced();
 }
 
@@ -61,7 +72,7 @@ jQuery(async () => {
 
   // These are examples of listening for events
   $("#my_button").on("click", onButtonClick);
-  $("#example_setting").on("input", onExampleInput);
+  $("#handykey_setting").on("input", onExampleInput);
 
   // Load settings when starting things up (if you have any)
   loadSettings();
