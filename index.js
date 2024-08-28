@@ -20,7 +20,7 @@ const stroke = /stroke\((\d+)\)/;
 const slide = /slide\((\d+),(\d+)\)/;
 
 
-const handy = new Handy();
+const handy = new Handy.default();
 
 
 eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
