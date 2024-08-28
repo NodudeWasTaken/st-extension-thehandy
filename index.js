@@ -18,7 +18,8 @@ const defaultSettings = {};
 
 const stroke = /stroke\((\d+)\)/;
 const slide = /slide\((\d+),(\d+)\)/;
-
+//await handy.setHampVelocity(50);
+//await handy.setSlideSettings(0,30)
 
 const handy = new Handy.default();
 
@@ -26,7 +27,16 @@ const handy = new Handy.default();
 eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
 
 function handleIncomingMessage(dataId) {
-    console.log("extension msg: ", chat[dataId].mes)
+	const msg = chat[dataId].mes
+    console.log("extension msg: ", msg)
+	const mstroke = msg.match(stroke)
+	if (mstroke) {
+		console.log("stroke: ", mstroke)
+	}
+	const mslide = msg.match(slide)
+	if (mslide) {
+		console.log("slide: ", mslide)
+	}
 }
 
 // Loads the extension settings if they exist, otherwise initializes them to the defaults.
@@ -50,14 +60,44 @@ function onExampleInput(event) {
   saveSettingsDebounced();
 }
 
+function setStatusColor(isred) {
+	const statusDot = document.getElementById('thehandy-status');
+  
+	if (!isred) {
+		statusDot.classList.remove('dot-red');
+		statusDot.classList.add('dot-green');
+	} else {
+		statusDot.classList.remove('dot-green');
+		statusDot.classList.add('dot-red');
+	}
+}
+
 // This function is called when the button is clicked
-function onButtonClick() {
-  // You can do whatever you want here
-  // Let's make a popup appear with the checked setting
-  toastr.info(
-    `The checkbox is ${extension_settings[extensionName].example_setting ? "checked" : "not checked"}`,
-    "A popup appeared because you clicked the button!"
-  );
+async function onButtonClick() {
+	// You can do whatever you want here
+	// Let's make a popup appear with the checked setting
+
+	//you can request info about the Handy
+	try {
+		const info = await handy.getInfo();
+		console.log(`Handy conneted with firmware ${info.fwVersion}`);
+
+		//you can send requests to the Handy API
+		await handy.setMode(HandyMode.hamp);
+		await handy.setHampStart();
+		setStatusColor(false)
+
+		toastr.info(
+			`Handy Status`,
+			"Connected!"
+		);
+	} catch (e) {
+		setStatusColor(true)
+		toastr.info(
+			`Handy Status`,
+			`Not connected error: ${e}!`
+		);
+	}
 }
 
 // This function is called when the extension is loaded
