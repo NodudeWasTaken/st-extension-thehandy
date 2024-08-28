@@ -31,12 +31,11 @@ eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
 
 const debounce = (callback, wait) => {
 	let timeoutId = null;
-	return (...args) => {
-		window.clearTimeout(timeoutId);
-		timeoutId = window.setTimeout(() => {
-			callback(...args);
-		}, wait);
-	};
+	
+	clearTimeout(timeoutId);
+	timeoutId = setTimeout(() => {
+		callback();
+	}, wait);
 }
 
 async function handleIncomingMessage(dataId) {
