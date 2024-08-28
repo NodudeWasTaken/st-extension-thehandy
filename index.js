@@ -18,8 +18,6 @@ const defaultSettings = {};
 
 const stroke = /stroke\((\d+)\)/;
 const slide = /slide\((\d+),(\d+)\)/;
-//await handy.setHampVelocity(50);
-//await handy.setSlideSettings(0,30)
 
 const handy = new Handy.default();
 
@@ -32,10 +30,12 @@ function handleIncomingMessage(dataId) {
 	const mstroke = msg.match(stroke)
 	if (mstroke) {
 		console.log("stroke: ", mstroke)
+		//await handy.setHampVelocity(50);
 	}
 	const mslide = msg.match(slide)
 	if (mslide) {
 		console.log("slide: ", mslide)
+		//await handy.setSlideSettings(0,30)
 	}
 }
 
