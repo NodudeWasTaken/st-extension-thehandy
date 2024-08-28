@@ -58,7 +58,7 @@ async function handleIncomingMessage(dataId) {
 		console.log("slide: ", mslide, minregulated, maxregulated)
 		await handy.setSlideSettings(minregulated,maxregulated)
 	}
-	
+
 	if (mstroke || mslide) {
 		await handy.setHampStart();
 		debounce(async () => handy.setHampStop(), extension_settings[extensionName].handy_maxrun);
@@ -81,15 +81,18 @@ async function loadSettings() {
 }
 
 // This function is called when the extension settings are changed in the UI
-function onExampleInput(event) {
-  const value = Boolean($(event.target).prop("value"));
+function onHandykeyInput(event) {
   const _val = $("#handykey_setting").val()
   extension_settings[extensionName].handy_key = _val;
-  const _maxw = $("#handykey_maxrun").val()
-  extension_settings[extensionName].handy_maxrun = _maxw;
   handy.connectionKey = _val;
-  console.log("oninput", _val, _maxw)
+  console.log("oninput", _val)
   saveSettingsDebounced();
+}
+
+function onMaxvalInput(event) {
+	const _maxw = $("#handykey_maxrun").val()
+	extension_settings[extensionName].handy_maxrun = _maxw;
+	console.log("oninput", _maxw)
 }
 
 function setStatusColor(isred) {
@@ -145,7 +148,8 @@ jQuery(async () => {
 
   // These are examples of listening for events
   $("#my_button").on("click", onButtonClick);
-  $("#handykey_setting").on("input", onExampleInput);
+  $("#handykey_setting").on("input", onHandykeyInput);
+  $("#handykey_maxrun").on("input", onMaxvalInput);
 
   // Load settings when starting things up (if you have any)
   loadSettings();
