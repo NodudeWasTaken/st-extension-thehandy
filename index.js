@@ -65,7 +65,7 @@ function onExampleInput(event) {
   const value = Boolean($(event.target).prop("value"));
   extension_settings[extensionName].handy_key = value;
   handy.connectionKey = value;
-  console.log("updated handy key")
+  console.log("oninput", value)
   saveSettingsDebounced();
 }
 
