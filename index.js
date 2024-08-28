@@ -63,9 +63,10 @@ async function loadSettings() {
 // This function is called when the extension settings are changed in the UI
 function onExampleInput(event) {
   const value = Boolean($(event.target).prop("value"));
-  extension_settings[extensionName].handy_key = value;
-  handy.connectionKey = value;
-  console.log("oninput", value)
+  const _val = $("#handykey_setting").val()
+  extension_settings[extensionName].handy_key = _val;
+  handy.connectionKey = _val;
+  console.log("oninput", _val)
   saveSettingsDebounced();
 }
 
