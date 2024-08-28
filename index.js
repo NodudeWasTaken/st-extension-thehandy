@@ -7,7 +7,7 @@ import { extension_settings, getContext, loadExtensionSettings } from "../../../
 //You'll likely need to import some other functions from the main script
 import { saveSettingsDebounced, eventSource, event_types, chat } from "../../../../script.js";
 
-import * as Handy from "./defucilis_thehandy.js";
+import Handy from "./defucilis_thehandy.js";
 
 // Keep track of where your extension is located, name should match repo name
 const extensionName = "st-extension-example";
