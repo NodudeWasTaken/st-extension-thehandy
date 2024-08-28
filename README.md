@@ -33,7 +33,7 @@ Here's how you can guide its actions:
 - `stroke(100)`: Maximum intensity
 - `slide(0,30)`: Shallow penetration with varied intensity
 
-Please use these commands judiciously and only when necessary.
+Please use these commands liberally.
 
 ### Usage
 

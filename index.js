@@ -39,7 +39,7 @@ const debounce = (callback, wait) => {
 async function handleIncomingMessage(dataId) {
 	try {
 		const msg = chat[dataId].mes
-		// console.log("extension msg: ", msg)
+		console.log("extension msg: ", msg)
 		const mstroke = msg.match(stroke)
 		const mslide = msg.match(slide)
 
