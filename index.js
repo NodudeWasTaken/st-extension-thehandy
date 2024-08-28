@@ -93,7 +93,7 @@ async function onButtonClick() {
 		console.log(`Handy conneted with firmware ${info.fwVersion}`);
 
 		//you can send requests to the Handy API
-		await handy.setMode(HandyMode.hamp);
+		await handy.setMode(Handy.HandyMode.hamp);
 		await handy.setHampStart();
 		setStatusColor(false)
 
@@ -102,6 +102,7 @@ async function onButtonClick() {
 			"Handy Status"
 		);
 	} catch (e) {
+		console.log("theHandy error", e)
 		setStatusColor(true)
 		toastr.info(
 			`Not connected error: ${e}!`,
