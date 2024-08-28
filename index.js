@@ -14,7 +14,8 @@ const extensionName = "st-extension-example";
 const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
 const extensionSettings = extension_settings[extensionName];
 const defaultSettings = {
-	handy_key: ""
+	handy_key: "",
+	handy_maxrun: 10000
 };
 
 
@@ -27,6 +28,18 @@ const handy = new Handy.default();
 eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
 // For debug
 eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
+
+function debounce(func, delay) {
+	let timeoutId;
+  
+	return (...args) => {
+		clearTimeout(timeoutId);
+
+		timeoutId = setTimeout(() => {
+			func.apply(this, args);
+		}, delay);
+	};
+}
 
 async function handleIncomingMessage(dataId) {
 	const msg = chat[dataId].mes
@@ -43,6 +56,10 @@ async function handleIncomingMessage(dataId) {
 		const maxregulated = Math.max(Math.min(mstroke[2],100),0)
 		console.log("slide: ", mslide, minregulated, maxregulated)
 		await handy.setSlideSettings(minregulated,maxregulated)
+	}
+	if (mstroke || mslide) {
+		await handy.setHampStart();
+		debounce(async () => handy.setHampStop(), extension_settings[extensionName].handy_maxrun);
 	}
 }
 
@@ -65,8 +82,10 @@ function onExampleInput(event) {
   const value = Boolean($(event.target).prop("value"));
   const _val = $("#handykey_setting").val()
   extension_settings[extensionName].handy_key = _val;
+  const _maxw = $("#handykey_maxrun").val()
+  extension_settings[extensionName].handy_maxrun = _maxw;
   handy.connectionKey = _val;
-  console.log("oninput", _val)
+  console.log("oninput", _val, _maxw)
   saveSettingsDebounced();
 }
 
@@ -94,7 +113,7 @@ async function onButtonClick() {
 
 		//you can send requests to the Handy API
 		await handy.setMode(Handy.HandyMode.hamp);
-		await handy.setHampStart();
+		await handy.setHampStop();
 		setStatusColor(false)
 
 		toastr.info(
