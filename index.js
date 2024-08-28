@@ -75,6 +75,7 @@ async function loadSettings() {
 
   // Updating settings in the UI
   $("#handykey_setting").prop("value", extension_settings[extensionName].handy_key).trigger("input");
+  $("#handykey_maxrun").prop("value", extension_settings[extensionName].handy_maxrun).trigger("input");
 }
 
 // This function is called when the extension settings are changed in the UI
