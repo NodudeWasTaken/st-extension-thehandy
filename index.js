@@ -56,6 +56,8 @@ async function loadSettings() {
 
   handy.connectionKey = extension_settings[extensionName].handy_key;
 
+  console.log("loadSettings handy call")
+
   // Updating settings in the UI
   $("#handykey_setting").prop("value", extension_settings[extensionName].handy_key).trigger("input");
 }
