@@ -56,11 +56,12 @@ async function handleIncomingMessage(dataId) {
 
 	if (mstroke || mslide) {
 		await handy.setHampStart();
-		console.log("handy delay", extension_settings[extensionName].handy_maxrun)
+		const delay = Number(extension_settings[extensionName].handy_maxrun)
+		console.log("handy delay", delay)
 		debounce(async () => {
 			console.log("handy stop")
 			await handy.setHampStop()
-		}, Number(extension_settings[extensionName].handy_maxrun));
+		}, delay);
 	}
 }
 
