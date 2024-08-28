@@ -5,7 +5,7 @@
 import { extension_settings, getContext, loadExtensionSettings } from "../../../extensions.js";
 
 //You'll likely need to import some other functions from the main script
-import { saveSettingsDebounced } from "../../../../script.js";
+import { saveSettingsDebounced, eventSource, event_types } from "../../../../script.js";
 
 // Keep track of where your extension is located, name should match repo name
 const extensionName = "st-extension-example";
@@ -14,7 +14,12 @@ const extensionSettings = extension_settings[extensionName];
 const defaultSettings = {};
 
 
- 
+eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
+
+function handleIncomingMessage(data) {
+    console.log("extension msg: ", data)
+}
+
 // Loads the extension settings if they exist, otherwise initializes them to the defaults.
 async function loadSettings() {
   //Create the settings if they don't exist
