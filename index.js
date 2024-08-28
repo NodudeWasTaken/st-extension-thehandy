@@ -29,21 +29,19 @@ eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
 // For debug
 eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
 
-function debounce(func, delay) {
-	let timeoutId;
-  
+const debounce = (callback, wait) => {
+	let timeoutId = null;
 	return (...args) => {
-		clearTimeout(timeoutId);
-
-		timeoutId = setTimeout(() => {
-			func.apply(this, args);
-		}, delay);
+		window.clearTimeout(timeoutId);
+		timeoutId = window.setTimeout(() => {
+			callback(...args);
+		}, wait);
 	};
 }
 
 async function handleIncomingMessage(dataId) {
 	const msg = chat[dataId].mes
-    console.log("extension msg: ", msg)
+    // console.log("extension msg: ", msg)
 	const mstroke = msg.match(stroke)
 	const mslide = msg.match(slide)
 
