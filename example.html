@@ -1,80 +1,60 @@
+<!-- Separated out additional HTML elements -->
 <div class="handy-extension-settings">
-	<div class="inline-drawer">
-	  <h2>
+	<div class="inline-drawer-grid">
+	  <!-- Header with toggle icon -->
+	  <header>
 		<b>TheHandy Extension</b>
 		<i class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></i>
-	  </h2>
-	  <div class="inline-drawer-content">
-		<fieldset>
-		  <legend>Extension Initialization</legend>
-		  <div class="init-extension_block flex-container">
-			<input id="my_button" class="menu_button" type="submit" value="Connect" />
-		  </div>
-		  <span id="thehandy-status" class="dot dot-red"></span>
-		</fieldset>
+	  </header>
   
-		<fieldset>
-		  <legend>Handy Key Settings</legend>
-		  <div class="handykey-extension_block flex-container">
-			<label for="handykey_setting">Handy Key:</label>
-			<input id="handykey_setting" type="text" />
+	  <!-- Content container -->
+	  <main>
+		<div class="init-extension_block">
+		  <input id="my_button" class="menu_button" type="submit" value="Connect" />
+		</div>
+		<span id="thehandy-status" class="status-dot status-red"></span>
   
-			<label for="handykey_maxrun">Duration (seconds):</label>
-			<input id="handykey_maxrun" type="number" />
-		  </div>
-		</fieldset>
+		<!-- Handy Key settings -->
+		<div class="handykey-extension_block">
+		  <label for="handykey_setting">Handy Key</label>
+		  <input id="handykey_setting" type="text" />
   
-		<hr class="sysHR" />
-	  </div>
+		  <label for="handykey_maxrun">Duration</label>
+		  <input id="handykey_maxrun" type="number" />
+		</div>
+  
+		<!-- Horizontal rule -->
+		<hr class="sysHR">
+	  </main>
 	</div>
   </div>
   
   <style>
-	* {
-	  box-sizing: border-box;
-	}
+  .inline-drawer-grid {
+	display: grid;
+	grid-template-areas:
+	  "header"
+	  "content";
+  }
   
-	.inline-drawer {
-	  border: 1px solid #ddd;
-	  padding: 1rem;
-	}
+  .inline-drawer-grid header,
+  .inline-drawer-grid main {
+	padding: 10px;
+  }
   
-	h2 {
-	  display: flex;
-	  justify-content: space-between;
-	  align-items: center;
-	  margin-bottom: 0.5rem;
-	}
+  .status-dot {
+	height: 25px;
+	width: 25px;
+	border-radius: 50%;
+	display: inline-block;
+  }
   
-	fieldset {
-	  border: none;
-	  padding: 0.5rem 0;
-	  margin-bottom: 1rem;
-	}
+  .status-red {
+	background-color: #ff0000;
+  }
   
-	legend {
-	  font-weight: bold;
-	  margin-bottom: 0.5rem;
-	}
-  
-	.flex-container {
-	  display: flex;
-	  align-items: center;
-	  gap: 0.5rem;
-	}
-  
-	.dot {
-	  height: 25px;
-	  width: 25px;
-	  border-radius: 50%;
-	  display: inline-block;
-	}
-  
-	.dot-red {
-	  background-color: #ff0000;
-	}
-  
-	.dot-green {
-	  background-color: #00ff00;
-	}
+  /* Add more status colors here if needed */
+  .status-green {
+	background-color: #00ff00;
+  }
   </style>
