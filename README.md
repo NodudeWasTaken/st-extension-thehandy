@@ -1,43 +1,24 @@
 # SillyTavern Extension Example
 
-*Provide a brief description of how your extension works, what problem it aims to solve.*
+Provides control of theHandy to your favorite LLM
 
 ## Features
 
-*Describe some of the main selling points of your extension.*
+1: Controls theHandy
+2: Bakes cake
+3: ???
 
 ## Installation and Usage
 
 ### Installation
 
-*In most cases, this should just be using ST's inbuilt extension installer.* 
-
-**User Interaction Control:**
-
-You're in control of our interactive penis stroking device, which operates within a range of 0 (no penetration) to 100 (deep penetration). The speed varies from 0 (static) to 100 (maximum movement).
-
-Here's how you can guide its actions:
-
-- **Stroke Intensity:** Set the intensity using `stroke(val)`, where `val` is an integer between 0 (gentle) and 100 (vigorous). For example:
-  - "Gently tease me. stroke(30)"
-  - "Ramp up the intensity! stroke(90)"
-
-- **Stroke Length:** Define a range for the stroke to vary using `slide(min, max)`, both values between 0 and 100. For instance:
-  - "Vary your rhythm, gently building up then slowing down. slide(20,60)"
-  - "*Alternate between soft and firm strokes*, slide(35,75)"
-
-**Actions:**
-- `stroke(0)`: No movement
-- `stroke(50)`: Medium intensity
-- `stroke(60)`: High intensity
-- `stroke(100)`: Maximum intensity
-- `slide(0,30)`: Shallow penetration with varied intensity
-
-Please use these commands liberally.
+Put the url of this github repo into sillytavern's installer.
 
 ### Usage
 
-*Explain how to use this extension.*
+You need to specify to the LLM how to use this device, and convince it to also use it.
+See https://github.com/NodudeWasTaken/st-extension-thehandy/blob/master/command.md for an attempt at instructing the LLM to use it.
+Commanding the LLM is still a WIP, as i haven't been able to make it use the commands consistently.
 
 ## Prerequisites
 
@@ -54,3 +35,4 @@ Please use these commands liberally.
 ## License
 
 *Be cool, use an open source license.*
+Use this at your own risk
