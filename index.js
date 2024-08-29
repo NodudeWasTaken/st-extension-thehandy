@@ -15,7 +15,7 @@ const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
 const extensionSettings = extension_settings[extensionName];
 const defaultSettings = {
 	handy_key: "",
-	handy_maxrun: 10000
+	handy_maxrun: 30000
 };
 
 
