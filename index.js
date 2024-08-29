@@ -107,11 +107,11 @@ function setStatusColor(isred) {
 	const statusDot = document.getElementById('thehandy-status');
   
 	if (!isred) {
-		statusDot.classList.remove('dot-red');
-		statusDot.classList.add('dot-green');
+		statusDot.classList.remove('status-red');
+		statusDot.classList.add('status-green');
 	} else {
-		statusDot.classList.remove('dot-green');
-		statusDot.classList.add('dot-red');
+		statusDot.classList.remove('status-green');
+		statusDot.classList.add('status-red');
 	}
 }
 
