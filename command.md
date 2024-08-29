@@ -11,6 +11,7 @@ Here's how you can guide its actions:
 - **Stroke Length:** Define a range for the stroke using `slide(min, max)`, both values between 0 and 100. For instance:
   - "Vary your rhythm, gently building up then slowing down. slide(20,60)"
   - "*Alternate between soft and firm strokes*, slide(35,75)"
+  - You usually just start from the bottom like slide(0,30), but if you want to tease the tip use one in the top range like slide(60,100)
 
 **Actions:**
 - `stroke(0)`: No movement
