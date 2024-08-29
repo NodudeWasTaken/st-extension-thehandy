@@ -1,39 +1,80 @@
-<!-- You might want to add additional HTML elements to ST. 
-    It's good practice to separate it out from your code -->
 <div class="handy-extension-settings">
-    <div class="inline-drawer">
-        <div class="inline-drawer-toggle inline-drawer-header">
-            <b>TheHandy Extension</b>
-            <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
-        </div>
-        <div class="inline-drawer-content">
-            <div class="init-extension_block flex-container">
-                <input id="my_button" class="menu_button" type="submit" value="Init Button" />
-            </div>
-			<span id="thehandy-status" class="dot dot-red"></span>
-
-            <div class="handykey-extension_block flex-container">
-                <input id="handykey_setting" type="text" />
-                <label for="handykey_setting">Handy Key</label>
-                <input id="handykey_maxrun" type="number" />
-                <label for="handykey_maxrun">max wait for command</label>
-            </div>
-
-            <hr class="sysHR" />
-        </div>
-    </div>
-</div>
-<style>
-.dot {
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  display: inline-block;
-} 
-.dot-red {
-	background-color: #ff0000;
-}
-.dot-green {
-	background-color: #00ff00;
-}
-</style>
+	<div class="inline-drawer">
+	  <h2>
+		<b>TheHandy Extension</b>
+		<i class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></i>
+	  </h2>
+	  <div class="inline-drawer-content">
+		<fieldset>
+		  <legend>Extension Initialization</legend>
+		  <div class="init-extension_block flex-container">
+			<input id="my_button" class="menu_button" type="submit" value="Connect" />
+		  </div>
+		  <span id="thehandy-status" class="dot dot-red"></span>
+		</fieldset>
+  
+		<fieldset>
+		  <legend>Handy Key Settings</legend>
+		  <div class="handykey-extension_block flex-container">
+			<label for="handykey_setting">Handy Key:</label>
+			<input id="handykey_setting" type="text" />
+  
+			<label for="handykey_maxrun">Duration (seconds):</label>
+			<input id="handykey_maxrun" type="number" />
+		  </div>
+		</fieldset>
+  
+		<hr class="sysHR" />
+	  </div>
+	</div>
+  </div>
+  
+  <style>
+	* {
+	  box-sizing: border-box;
+	}
+  
+	.inline-drawer {
+	  border: 1px solid #ddd;
+	  padding: 1rem;
+	}
+  
+	h2 {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  margin-bottom: 0.5rem;
+	}
+  
+	fieldset {
+	  border: none;
+	  padding: 0.5rem 0;
+	  margin-bottom: 1rem;
+	}
+  
+	legend {
+	  font-weight: bold;
+	  margin-bottom: 0.5rem;
+	}
+  
+	.flex-container {
+	  display: flex;
+	  align-items: center;
+	  gap: 0.5rem;
+	}
+  
+	.dot {
+	  height: 25px;
+	  width: 25px;
+	  border-radius: 50%;
+	  display: inline-block;
+	}
+  
+	.dot-red {
+	  background-color: #ff0000;
+	}
+  
+	.dot-green {
+	  background-color: #00ff00;
+	}
+  </style>
