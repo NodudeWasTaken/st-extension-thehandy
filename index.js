@@ -19,15 +19,34 @@ const defaultSettings = {
 };
 
 
+
 const stroke = /stroke\((\d+)\)/;
 const slide = /slide\((\d+),(\d+)\)/;
 
-const handy = new Handy.default();
-
+const cmdtable = [
+	{
+		command: stroke,
+		func: async (handy) => {
+			const regulated = Math.max(Math.min(mstroke[1],100),0)
+			console.log("stroke: ", mstroke, regulated)
+			await handy.setHampVelocity(regulated);
+		}
+	},
+	{
+		command: slide,
+		func: async (handy) => {
+			const minregulated = Math.max(Math.min(mslide[1],100),0)
+			const maxregulated = Math.max(Math.min(mslide[2],100),0)
+			console.log("slide: ", mslide, minregulated, maxregulated)
+			await handy.setSlideSettings(minregulated,maxregulated)
+		}
+	},
+];
 
 eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
 // For debug
 eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
+eventSource.on(event_types.SMOOTH_STREAM_TOKEN_RECEIVED, handleSmoothMessage);
 
 const debounce = (callback, wait) => {
 	let timeoutId = null;
@@ -36,26 +55,20 @@ const debounce = (callback, wait) => {
 	timeoutId = setTimeout(callback, wait);
 }
 
-async function handleIncomingMessage(dataId) {
+const handy = new Handy.default();
+async function handleCommand(msg) {
 	try {
-		const msg = chat[dataId].mes
-		console.log("extension msg: ", chat[dataId])
-		const mstroke = msg.match(stroke)
-		const mslide = msg.match(slide)
+		var matched = false
 
-		if (mstroke) {
-			const regulated = Math.max(Math.min(mstroke[1],100),0)
-			console.log("stroke: ", mstroke, regulated)
-			await handy.setHampVelocity(regulated);
-		}
-		if (mslide) {
-			const minregulated = Math.max(Math.min(mslide[1],100),0)
-			const maxregulated = Math.max(Math.min(mslide[2],100),0)
-			console.log("slide: ", mslide, minregulated, maxregulated)
-			await handy.setSlideSettings(minregulated,maxregulated)
+		for (const x of cmdtable) { 
+			const match = msg.match(x.command)
+			matched = matched || match
+			if (match) {
+				await x.func(handy)
+			}
 		}
 
-		if (mstroke || mslide) {
+		if (matched) {
 			await handy.setHampStart();
 			const delay = Number(extension_settings[extensionName].handy_maxrun)
 			console.log("handy delay", delay)
@@ -64,12 +77,33 @@ async function handleIncomingMessage(dataId) {
 				await handy.setHampStop()
 			}, delay);
 		}
+
+		return matched
 	} catch (e) {
+		console.log("handleIncomingMessage error", e)
 		toastr.info(
 			`handleIncomingMessage error: ${e}!`,
 			`Handy Script`
 		);
 	}
+
+	return false
+}
+
+let readBuffer = ""
+async function handleSmoothMessage(dataId) {
+	readBuffer += dataId
+	if (await handleCommand(readBuffer)) {
+		console.log("smooth msg: ", readBuffer)
+		readBuffer = ""
+	}
+}
+
+async function handleIncomingMessage(dataId) {
+	const msg = chat[dataId].mes
+	console.log("extension msg: ", chat[dataId])
+	await handleCommand(msg)
+	readBuffer = ""
 }
 
 // Loads the extension settings if they exist, otherwise initializes them to the defaults.
@@ -135,7 +169,7 @@ async function onButtonClick() {
 			"Handy Status"
 		);
 	} catch (e) {
-		console.log("theHandy error", e)
+		console.log("onButtonClick error", e)
 		setStatusColor(true)
 		toastr.info(
 			`Not connected error: ${e}!`,

@@ -1,4 +1,4 @@
-# SillyTavern Extension Example
+# SillyTavern Extension theHandy
 
 Provides control of theHandy to your favorite LLM
 
