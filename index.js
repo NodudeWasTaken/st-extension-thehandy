@@ -8,6 +8,7 @@ import { extension_settings, getContext, loadExtensionSettings } from "../../../
 import { saveSettingsDebounced, eventSource, event_types, chat } from "../../../../script.js";
 
 import Handy from "./defucilis_thehandy.js";
+import debounce from "./debounce.js";
 
 // Keep track of where your extension is located, name should match repo name
 const extensionName = "st-extension-thehandy";
@@ -48,13 +49,7 @@ eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
 eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
 eventSource.on(event_types.SMOOTH_STREAM_TOKEN_RECEIVED, handleSmoothMessage);
 
-const debounce = (callback, wait) => {
-	let timeoutId = null;
-	
-	clearTimeout(timeoutId);
-	timeoutId = setTimeout(callback, wait);
-}
-
+let running = false
 const handy = new Handy.default();
 async function handleCommand(msg) {
 	try {
@@ -69,12 +64,16 @@ async function handleCommand(msg) {
 		}
 
 		if (matched) {
-			await handy.setHampStart();
 			const delay = Number(extension_settings[extensionName].handy_maxrun)
 			console.log("handy delay", delay)
+			if (!running) {
+				running = true
+				await handy.setHampStart();
+			}
 			debounce(async () => {
 				console.log("handy stop")
 				await handy.setHampStop()
+				running = false
 			}, delay);
 		}
 
