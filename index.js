@@ -26,18 +26,18 @@ const slide = /slide\((\d+),(\d+)\)/;
 const cmdtable = [
 	{
 		command: stroke,
-		func: async (handy) => {
-			const regulated = Math.max(Math.min(mstroke[1],100),0)
-			console.log("stroke: ", mstroke, regulated)
+		func: async (match,handy) => {
+			const regulated = Math.max(Math.min(match[1],100),0)
+			console.log("stroke: ", match, regulated)
 			await handy.setHampVelocity(regulated);
 		}
 	},
 	{
 		command: slide,
-		func: async (handy) => {
-			const minregulated = Math.max(Math.min(mslide[1],100),0)
-			const maxregulated = Math.max(Math.min(mslide[2],100),0)
-			console.log("slide: ", mslide, minregulated, maxregulated)
+		func: async (match,handy) => {
+			const minregulated = Math.max(Math.min(match[1],100),0)
+			const maxregulated = Math.max(Math.min(match[2],100),0)
+			console.log("slide: ", match, minregulated, maxregulated)
 			await handy.setSlideSettings(minregulated,maxregulated)
 		}
 	},
@@ -64,7 +64,7 @@ async function handleCommand(msg) {
 			const match = msg.match(x.command)
 			matched = matched || match
 			if (match) {
-				await x.func(handy)
+				await x.func(match,handy)
 			}
 		}
 
