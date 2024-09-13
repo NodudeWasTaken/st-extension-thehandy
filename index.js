@@ -8,7 +8,6 @@ import { extension_settings, getContext, loadExtensionSettings } from "../../../
 import { saveSettingsDebounced, eventSource, event_types, chat } from "../../../../script.js";
 
 import Handy from "./defucilis_thehandy.js";
-import debounce from "./debounce.js";
 
 // Keep track of where your extension is located, name should match repo name
 const extensionName = "st-extension-thehandy";
@@ -49,6 +48,22 @@ eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
 eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
 eventSource.on(event_types.SMOOTH_STREAM_TOKEN_RECEIVED, handleSmoothMessage);
 
+const debounce = (mainFunction, delay) => {
+	// Declare a variable called 'timer' to store the timer ID
+	let timer;
+
+	// Return an anonymous function that takes in any number of arguments
+	return function (...args) {
+		// Clear the previous timer to prevent the execution of 'mainFunction'
+		clearTimeout(timer);
+	
+		// Set a new timer that will execute 'mainFunction' after the specified delay
+		timer = setTimeout(() => {
+			mainFunction(...args);
+		}, delay);
+	};
+};
+
 let running = false
 const handy = new Handy.default();
 async function handleCommand(msg) {
@@ -70,11 +85,11 @@ async function handleCommand(msg) {
 				running = true
 				await handy.setHampStart();
 			}
-			debounce(async () => {
+			debounce(() => {
 				console.log("handy stop")
-				await handy.setHampStop()
+				handy.setHampStop()
 				running = false
-			}, delay);
+			}, delay)()
 		}
 
 		return matched
@@ -126,14 +141,15 @@ function onHandykeyInput(event) {
   const _val = $("#handykey_setting").val()
   extension_settings[extensionName].handy_key = _val;
   handy.connectionKey = _val;
-  console.log("oninput", _val)
+  console.log("oninput", _val);
   saveSettingsDebounced();
 }
 
 function onMaxvalInput(event) {
 	const _maxw = $("#handykey_maxrun").val()
 	extension_settings[extensionName].handy_maxrun = _maxw;
-	console.log("oninput", _maxw)
+	console.log("oninput", _maxw);
+	saveSettingsDebounced();
 }
 
 function setStatusColor(isred) {
