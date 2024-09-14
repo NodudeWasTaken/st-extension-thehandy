@@ -20,6 +20,9 @@ You need to specify to the LLM how to use this device, and convince it to also u
 See https://github.com/NodudeWasTaken/st-extension-thehandy/blob/master/command.md for an attempt at instructing the LLM to use it.
 Commanding the LLM is still a WIP, as i haven't been able to make it use the commands consistently.
 
+
+See https://github.com/NodudeWasTaken/st-extension-thehandy/blob/master/theHandy.json for a "world" import.
+
 ## Prerequisites
 
 *Specify the version of ST necessary here.*

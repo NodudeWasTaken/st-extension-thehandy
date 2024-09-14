@@ -14,8 +14,9 @@ const extensionName = "st-extension-thehandy";
 const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
 const extensionSettings = extension_settings[extensionName];
 const defaultSettings = {
-	handy_key: "",
-	handy_maxrun: 30000
+	key: "",
+	maxrun: 30000,
+	maxspeed: 70
 };
 
 
@@ -27,7 +28,8 @@ const cmdtable = [
 	{
 		command: stroke,
 		func: async (match,handy) => {
-			const regulated = Math.max(Math.min(match[1],100),0)
+			var regulated = Math.max(Math.min(match[1],100),0)
+			regulated = regulated / 100*extension_settings[extensionName].maxspeed
 			console.log("stroke: ", match, regulated)
 			await handy.setHampVelocity(regulated);
 		}
@@ -79,7 +81,7 @@ async function handleCommand(msg) {
 		}
 
 		if (matched) {
-			const delay = Number(extension_settings[extensionName].handy_maxrun)
+			const delay = Number(extension_settings[extensionName].maxrun)
 			console.log("handy delay", delay)
 			if (!running) {
 				running = true
@@ -123,32 +125,36 @@ async function handleIncomingMessage(dataId) {
 // Loads the extension settings if they exist, otherwise initializes them to the defaults.
 async function loadSettings() {
   //Create the settings if they don't exist
-  extension_settings[extensionName] = extension_settings[extensionName] || {};
-  if (Object.keys(extension_settings[extensionName]).length === 0) {
-    Object.assign(extension_settings[extensionName], defaultSettings);
-  }
-
-  handy.connectionKey = extension_settings[extensionName].handy_key;
+  extension_settings[extensionName] = extension_settings[extensionName] || defaultSettings;
+  handy.connectionKey = extension_settings[extensionName].key;
 
   // Updating settings in the UI
-  $("#handykey_setting").prop("value", extension_settings[extensionName].handy_key).trigger("input");
-  $("#handykey_maxrun").prop("value", extension_settings[extensionName].handy_maxrun).trigger("input");
+  $("#handykey_setting").prop("value", extension_settings[extensionName].key).trigger("input");
+  $("#handykey_maxrun").prop("value", extension_settings[extensionName].maxrun).trigger("input");
+  $("#handykey_maxspeed").prop("value", extension_settings[extensionName].maxspeed).trigger("input");
   onButtonClick()
 }
 
 // This function is called when the extension settings are changed in the UI
 function onHandykeyInput(event) {
   const _val = $("#handykey_setting").val()
-  extension_settings[extensionName].handy_key = _val;
+  extension_settings[extensionName].key = _val;
   handy.connectionKey = _val;
-  console.log("oninput", _val);
+  console.log("onHandykeyInput", _val);
   saveSettingsDebounced();
 }
 
 function onMaxvalInput(event) {
 	const _maxw = $("#handykey_maxrun").val()
-	extension_settings[extensionName].handy_maxrun = _maxw;
-	console.log("oninput", _maxw);
+	extension_settings[extensionName].maxrun = _maxw;
+	console.log("onMaxvalInput", _maxw);
+	saveSettingsDebounced();
+}
+
+function onMaxspeedInput(event) {
+	const _maxw = $("#handykey_maxspeed").val()
+	extension_settings[extensionName].maxspeed = _maxw;
+	console.log("onMaxspeedInput", _maxw);
 	saveSettingsDebounced();
 }
 
@@ -207,6 +213,7 @@ jQuery(async () => {
   $("#my_button").on("click", onButtonClick);
   $("#handykey_setting").on("input", onHandykeyInput);
   $("#handykey_maxrun").on("input", onMaxvalInput);
+  $("#handykey_maxspeed").on("input", onMaxspeedInput);
 
   // Load settings when starting things up (if you have any)
   loadSettings();
