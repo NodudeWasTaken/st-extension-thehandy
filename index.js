@@ -89,8 +89,9 @@ async function handleCommand(msg) {
 			}
 			debounce(() => {
 				console.log("handy stop")
-				handy.setHampStop()
-				running = false
+				handy.setHampStop().then(() => {
+					running = false
+				})
 			}, delay)()
 		}
 
