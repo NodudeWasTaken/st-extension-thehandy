@@ -8,39 +8,30 @@ import { extension_settings, getContext, loadExtensionSettings } from "../../../
 import { saveSettingsDebounced, eventSource, event_types, chat } from "../../../../script.js";
 
 import Handy from "./defucilis_thehandy.js";
+import { regulateSpeed, extensionName, extensionFolderPath, defaultSettings, extensionSettings } from "./utils.js";
+import { aichat_cmd } from "./aichat_extension.js";
 
 // Keep track of where your extension is located, name should match repo name
-const extensionName = "st-extension-thehandy";
-const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
-const extensionSettings = extension_settings[extensionName];
-const defaultSettings = {
-	key: "",
-	maxrun: 30000,
-	maxspeed: 70
-};
 
-
-
-const stroke = /stroke\((\d+)\)/;
-const slide = /slide\((\d+),(\d+)\)/;
-
-const cmdtable = [
+var cmdtable = [
 	{
-		command: stroke,
+		command: /stroke\((\d+)\)/,
 		func: async (match,handy) => {
 			var regulated = Math.max(Math.min(match[1],100),0)
-			regulated = regulated / 100*extension_settings[extensionName].maxspeed
-			console.log("stroke: ", match, regulated)
+			regulated = regulateSpeed(regulated)
+			console.log(match, regulated)
+			await handy.setHampStart();
 			await handy.setHampVelocity(regulated);
 		}
 	},
 	{
-		command: slide,
+		command: /slide\((\d+),(\d+)\)/,
 		func: async (match,handy) => {
-			const minregulated = Math.max(Math.min(match[1],100),0)
-			const maxregulated = Math.max(Math.min(match[2],100),0)
-			console.log("slide: ", match, minregulated, maxregulated)
-			await handy.setSlideSettings(minregulated,maxregulated)
+			var minr = Math.max(Math.min(match[1],100),0)
+			var maxr = Math.max(Math.min(match[2],100),0)
+			console.log(match, minr, maxr)
+			await handy.setHampStart();
+			await handy.setStrokeZone(minr,maxr)
 		}
 	},
 ];
@@ -54,6 +45,10 @@ let running = false
 let timer;
 const handy = new Handy.default();
 async function handleCommand(msg) {
+	if (!getActive()) {
+		return
+	}
+
 	try {
 		var matched = false
 
@@ -66,12 +61,8 @@ async function handleCommand(msg) {
 		}
 
 		if (matched) {
-			const delay = Number(extension_settings[extensionName].maxrun)
+			const delay = Number(extensionSettings.maxrun)
 			console.log("handy delay", delay)
-			if (!running) {
-				running = true
-				await handy.setHampStart();
-			}
 
 			// Clear the previous timer to prevent the execution of 'mainFunction'
 			clearTimeout(timer);
@@ -117,19 +108,19 @@ async function handleIncomingMessage(dataId) {
 async function loadSettings() {
   //Create the settings if they don't exist
   extension_settings[extensionName] = extension_settings[extensionName] || defaultSettings;
-  handy.connectionKey = extension_settings[extensionName].key;
+  handy.connectionKey = extensionSettings.key;
 
   // Updating settings in the UI
-  $("#handykey_setting").prop("value", extension_settings[extensionName].key).trigger("input");
-  $("#handykey_maxrun").prop("value", extension_settings[extensionName].maxrun).trigger("input");
-  $("#handykey_maxspeed").prop("value", extension_settings[extensionName].maxspeed).trigger("input");
+  $("#handykey_setting").prop("value", extensionSettings.key).trigger("input");
+  $("#handykey_maxrun").prop("value", extensionSettings.maxrun).trigger("input");
+  $("#handykey_maxspeed").prop("value", extensionSettings.maxspeed).trigger("input");
   onButtonClick()
 }
 
 // This function is called when the extension settings are changed in the UI
 function onHandykeyInput(event) {
   const _val = $("#handykey_setting").val()
-  extension_settings[extensionName].key = _val;
+  extensionSettings.key = _val;
   handy.connectionKey = _val;
   console.log("onHandykeyInput", _val);
   saveSettingsDebounced();
@@ -137,14 +128,14 @@ function onHandykeyInput(event) {
 
 function onMaxvalInput(event) {
 	const _maxw = $("#handykey_maxrun").val()
-	extension_settings[extensionName].maxrun = _maxw;
+	extensionSettings.maxrun = _maxw;
 	console.log("onMaxvalInput", _maxw);
 	saveSettingsDebounced();
 }
 
 function onMaxspeedInput(event) {
 	const _maxw = $("#handykey_maxspeed").val()
-	extension_settings[extensionName].maxspeed = _maxw;
+	extensionSettings.maxspeed = _maxw;
 	console.log("onMaxspeedInput", _maxw);
 	saveSettingsDebounced();
 }
@@ -159,6 +150,12 @@ function setStatusColor(isred) {
 		statusDot.classList.remove('status-green');
 		statusDot.classList.add('status-red');
 	}
+}
+
+function getActive() {
+	const statusDot = document.getElementById('thehandy-status');
+  
+	return statusDot.classList.contains("status-green") || typeof __SILLYHANDY_DEBUG !== "undefined"
 }
 
 // This function is called when the button is clicked
@@ -208,4 +205,5 @@ jQuery(async () => {
 
   // Load settings when starting things up (if you have any)
   loadSettings();
+  cmdtable = cmdtable.push(...aichat_cmd);
 });
