@@ -1,53 +1,70 @@
-<!-- Separated out additional HTML elements -->
 <div class="handy-extension-settings">
 	<div class="inline-drawer">
-	  <!-- Header with toggle icon -->
-	  <div class="inline-drawer-toggle inline-drawer-header">
-		<b>TheHandy Extension</b>
-		<i class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></i>
-	  </div>
-  
-	  <!-- Content container -->
-	  <div class="inline-drawer-content">
-		<div class="init-extension_block">
-		  <input id="my_button" class="menu_button" type="submit" value="Connect" />
+		<div class="inline-drawer-toggle inline-drawer-header">
+			<b>TheHandy Extension</b>
+			<i class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></i>
 		</div>
-		<span id="thehandy-status" class="status-dot status-red"></span>
-  
-		<!-- Handy Key settings -->
-		<div class="handykey-extension_block">
-		  <label for="handykey_setting" class="title_restorable">Handy Key</label>
-		  <input id="handykey_setting" type="text" class="text_pole"/>
-		  <br>
-  
-		  <label for="handykey_maxrun" class="title_restorable">Duration (ms)</label>
-		  <input id="handykey_maxrun" type="number" class="text_pole"/>
-		  <br>
+		<div class="inline-drawer-content">
+			<div class="init-extension_block">
+				<button id="my_button" class="menu_button">Connect</button>
+			</div>
+			<div class="status-block">
+				<span class="title_restorable">Status:</span>
+				<div id="thehandy-status" class="status-dot"></div>
+			</div>
+			<br>
+			<div class="handykey-extension_block">
+				<div class="setting-group">
+					<label for="handykey_setting" class="title_restorable">Handy Key:</label>
+					<div class="input-container">
+						<input id="handykey_setting" type="text" class="text_pole">
+					</div>
+				</div>
 
-		  <label for="handykey_maxspeed" class="title_restorable">Max speed (%)</label>
-		  <input id="handykey_maxspeed" type="number" class="text_pole"/>
+				<div class="setting-group">
+					<label for="handykey_maxrun" class="title_restorable">Duration:</label>
+					<div class="input-container">
+						<input id="handykey_maxrun" type="text" class="text_pole">
+					</div>
+				</div>
+
+				<div class="setting-group">
+					<label for="handykey_maxspeed" class="title_restorable">Max speed:</label>
+					<div class="input-container">
+						<input id="handykey_maxspeed" type="text" class="text_pole">
+					</div>
+				</div>
+				<hr class="sysHR">
+			</div>
 		</div>
-  
-		<!-- Horizontal rule -->
-		<hr class="sysHR">
-	  </div>
 	</div>
-  </div>
-  
-  <style>
-  .status-dot {
-	height: 25px;
-	width: 25px;
-	border-radius: 50%;
-	display: inline-block;
-  }
-  
-  .status-red {
-	background-color: #ff0000;
-  }
-  
-  /* Add more status colors here if needed */
-  .status-green {
-	background-color: #00ff00;
-  }
-  </style>
+</div>
+
+<style>
+	.status-block {
+		display: inline-flex;
+		align-items: center;
+	}
+	.status-dot {
+		height: 15px;
+		width: 15px;
+		margin: 5px;
+		border-radius: 50%;
+	}
+	.status-red {
+		background-color: #ff0000;
+	}
+	.status-green {
+		background-color: #00ff00;
+	}
+	.status-yellow {
+		background-color: #ffa500;
+	}
+	/*Add more status colors if needed*/
+	.status-orange {
+		background-color: #ff8000;
+	}
+	.status-purple {
+		background-color: #800080;
+	}
+</style>
