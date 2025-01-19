@@ -37,9 +37,9 @@ var cmdtable = [
 ];
 
 eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);
+eventSource.on(event_types.SMOOTH_STREAM_TOKEN_RECEIVED, handleSmoothMessage);
 // For debug
 eventSource.on(event_types.MESSAGE_UPDATED, handleIncomingMessage);
-eventSource.on(event_types.SMOOTH_STREAM_TOKEN_RECEIVED, handleSmoothMessage);
 
 let running = false
 let timer;
